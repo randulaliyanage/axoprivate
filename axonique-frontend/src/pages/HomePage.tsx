@@ -1,0 +1,119 @@
+// SCRUM-14 — Homepage Layout
+// Hero section, featured products, collections, and why-us
+
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PRODUCTS } from '../data/products';
+import ProductCard from '../components/ProductCard';
+import Toast from '../components/Toast';
+import './HomePage.css';
+
+export default function HomePage() {
+  const navigate = useNavigate();
+  const [toast, setToast] = useState('');
+
+  const newest = PRODUCTS.filter((p) =>
+    p.name.includes('Timeless Tee') || p.name.includes('Impossible Tee')
+  );
+  const featured = PRODUCTS.filter((p) =>
+    p.name.includes('Phantom Tee') || p.name.includes('Xenonix Tee')
+  );
+
+  return (
+    <main className="page">
+      {/* ---- Hero ---- */}
+      <div className="hero">
+        <div className="hero__content">
+          <div className="hero__tag">Our New <em>Ascension</em> Collection is out</div>
+          <h1 className="hero__title">
+            <em>Welcome to </em><br />AXO
+          </h1>
+          <p className="hero__desc">
+            Experience a seamless and personalized way to order your AXO apparel. From selecting
+            your style to final delivery, we've designed every step to be simple, transparent, and
+            customer-focused. Your style. Your order. Made easy.
+          </p>
+          <div className="hero__cta">
+            <button className="btn btn-primary" onClick={() => navigate('/catalog')}>
+              Shop Collection →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ---- Newest Arrivals ---- */}
+      <section>
+        <div className="container">
+          <div className="section-header">
+            <div className="section-label">Latest Drops</div>
+            <h2 className="section-title">Newest Arrivals</h2>
+          </div>
+          <div className="product-grid">
+            {newest.map((p) => (
+              <ProductCard key={p.id} product={p} onToast={setToast} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Featured Collection ---- */}
+      <section>
+        <div className="container">
+          <div className="section-header">
+            <div className="section-label">Handpicked</div>
+            <h2 className="section-title">Featured Collection</h2>
+          </div>
+          <div className="product-grid">
+            {featured.map((p) => (
+              <ProductCard key={p.id} product={p} onToast={setToast} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Collections ---- */}
+      <section style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div className="container">
+          <div className="section-header">
+            <div className="section-label">Shop By</div>
+            <h2 className="section-title">Collections</h2>
+          </div>
+          <div className="collections-grid">
+            <div className="collection-card" onClick={() => navigate('/catalog')} role="button" tabIndex={0}>
+              <div className="collection-card__icon">✨</div>
+              <h3 className="collection-card__title">Ascension</h3>
+              <p className="collection-card__desc">Elevate your style with premium pieces</p>
+            </div>
+            <div className="collection-card" onClick={() => navigate('/catalog')} role="button" tabIndex={0}>
+              <div className="collection-card__icon">🌙</div>
+              <h3 className="collection-card__title">Night Crawler</h3>
+              <p className="collection-card__desc">Dark and bold streetwear essentials</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Why AXO ---- */}
+      <section style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <div className="section-label">Our Promise</div>
+          <h2 className="section-title" style={{ marginBottom: '3rem' }}>Why AXO?</h2>
+          <div className="why-grid">
+            <div>
+              <div className="why-item__icon">🌿</div>
+              <h3 className="why-item__title">Sustainable</h3>
+              <p className="why-item__desc">Ethically sourced materials from certified suppliers</p>
+            </div>
+            <div>
+              <div className="why-item__icon">✦</div>
+              <h3 className="why-item__title">Premium Quality</h3>
+              <p className="why-item__desc">Crafted to last through every season and trend</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Toast message={toast} onDone={() => setToast('')} />
+    </main>
+  );
+}

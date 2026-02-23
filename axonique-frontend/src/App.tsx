@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.tsx — Route configuration mapping branches to pages
+// SCRUM-14: /          → HomePage
+// SCRUM-15: Navbar     → all pages
+// SCRUM-16: /catalog   → CatalogPage
+// SCRUM-17: /product/:id → ProductDetailPage
+// SCRUM-18: /cart      → CartPage
+// SCRUM-19: Global styles applied throughout
 
-function App() {
-  const [count, setCount] = useState(0)
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import CatalogPage from './pages/CatalogPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import CartPage from './pages/CartPage';
+import ContactPage from './pages/ContactPage';
 
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <CartProvider>
+        {/* SCRUM-15: Navbar is mounted on every page */}
+        <Navbar />
 
-export default App
+        <Routes>
+          {/* SCRUM-14 */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* SCRUM-16 */}
+          <Route path="/catalog" element={<CatalogPage />} />
+
+          {/* SCRUM-17 */}
+          <Route path="/product/:id" element={<ProductDetailPage />} />
+
+          {/* SCRUM-18 */}
+          <Route path="/cart" element={<CartPage />} />
+
+          {/* Extra pages */}
+          <Route path="/contact" element={<ContactPage />} />
+
+          {/* Fallback */}
+          <Route path="*" element={<HomePage />} />
+        </Routes>
+
+        <Footer />
+      </CartProvider>
+    </BrowserRouter>
+  );
+}
