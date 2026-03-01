@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.axonique_backend.axonique_backend.dto.response.ApiResponse;
 
 /**
- * GlobalExceptionHandler — catches all exceptions from controllers and returns consistent ApiResponse error bodies.
+ * catches all exceptions from controllers and returns consistent ApiResponse error bodies.
  *
  * SOLID S (Single Responsibility): exception handling is isolated here, so controllers stay clean (no try/catch blocks).
  * SOLID O (Open/Closed): add a new @ExceptionHandler without touching existing ones.

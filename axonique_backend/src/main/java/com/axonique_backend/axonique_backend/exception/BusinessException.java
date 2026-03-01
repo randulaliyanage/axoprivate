@@ -1,7 +1,7 @@
 package com.axonique_backend.axonique_backend.exception;
 
 /**
- * BusinessException — thrown when a business rule is violated.
+ * thrown when a business rule is violated.
  *
  * SOLID S: separate from ResourceNotFoundException — different failure reason.
  */

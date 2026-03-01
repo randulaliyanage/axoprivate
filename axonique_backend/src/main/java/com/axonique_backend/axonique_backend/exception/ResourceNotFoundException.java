@@ -1,7 +1,7 @@
 package com.axonique_backend.axonique_backend.exception;
 
 /**
- * ResourceNotFoundException — thrown when an entity cannot be found by ID.
+ * thrown when an entity cannot be found by ID.
  *
  * Inheritance: extends RuntimeException (unchecked).
  * SOLID S: one exception type per failure mode; not a catch-all.
