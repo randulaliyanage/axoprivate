@@ -7,7 +7,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * SOLID S: CORS is its own infrastructure concern, not mixed into controllers.
+ * S: CORS is its own infrastructure concern, not mixed into controllers.
  */
 @Configuration
 public class CorsConfig {
@@ -26,3 +26,4 @@ public class CorsConfig {
     return new CorsFilter(source);
     }
 }
+

@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * SecurityConfig — dev-friendly security setup.
+ * dev-friendly security setup.
  *
  * Permits all API requests without authentication and disables CSRF
  * (stateless REST API). Spring Security still runs but no longer
