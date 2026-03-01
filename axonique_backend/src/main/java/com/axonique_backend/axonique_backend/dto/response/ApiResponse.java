@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 /**
- * ApiResponse — generic response envelope for all endpoints.
+ * generic response envelope for all endpoints.
  *
  * Generics: wraps any payload type T.
  * SOLID S: only concerns itself with shaping the HTTP response body.
