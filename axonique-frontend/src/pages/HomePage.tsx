@@ -13,6 +13,7 @@ export default function HomePage() {
   const [toast, setToast] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
 
+  // Fetch products from API
   useEffect(() => {
     fetch('http://localhost:8080/api/products')
       .then((res) => res.json())
