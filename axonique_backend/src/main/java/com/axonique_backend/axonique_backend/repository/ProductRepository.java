@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 /**
- * ProductRepository — data access layer for Products.
+ * data access layer for Products.
  *
  * SOLID D (Dependency Inversion): services depend on this interface,
  *   not on a concrete DAO class.

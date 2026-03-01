@@ -20,7 +20,6 @@ import lombok.Setter;
 /**
  * Product — core domain entity for catalogue items.
  *
- * OOP:
  *  - Encapsulation: all fields private, accessed via Lombok getters/setters
  *  - Inheritance: extends BaseEntity (id, audit timestamps)
  *

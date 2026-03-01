@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * ProductResponse — outbound DTO returned to the frontend.
+ * outbound DTO returned to the frontend.
  *
  * SOLID S: shapes the API response independently of the domain model. Changing the response shape never touches Product.java.
  */
