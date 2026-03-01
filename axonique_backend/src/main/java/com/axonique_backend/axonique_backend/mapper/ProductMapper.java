@@ -7,7 +7,7 @@ import com.axonique_backend.axonique_backend.dto.response.ProductResponse;
 import com.axonique_backend.axonique_backend.model.Product;
 
 /**
- * ProductMapper — converts between Product domain model and DTOs.
+ * converts between Product domain model and DTOs.
  *
  * SOLID S (Single Responsibility): mapping is its own concern.
  * SOLID D (Dependency Inversion): controllers and services depend on this

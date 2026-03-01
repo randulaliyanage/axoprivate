@@ -5,7 +5,7 @@ import com.axonique_backend.axonique_backend.dto.request.ProductRequest;
 import com.axonique_backend.axonique_backend.dto.response.ProductResponse;
 
 /**
- * ProductService — interface defining the product feature contract.
+ * interface defining the product feature contract.
  *
  * SOLID I (Interface Segregation): focused only on product operations.
  *   Cart and order operations are in their own interfaces.

@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 /**
- * ProductRequest — DTO for creating or updating a product.
+ * DTO for creating or updating a product.
  *
  * SOLID S: only carries inbound data — not the domain model.
  * Encapsulation: validation annotations enforce rules at the boundary.

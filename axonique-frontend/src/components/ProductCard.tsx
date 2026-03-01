@@ -36,16 +36,16 @@ export default function ProductCard({ product, onToast }: ProductCardProps) {
             {product.badge}
           </div>
         )}
-        {product.imageUrl ? (
+                {product.imageUrl ? (
           <img 
             src={product.imageUrl} 
             alt={product.name}
             className="product-card__image"
           />
         ) : (
-          <span className="product-card__emoji" aria-hidden="true">
-            {product.emoji}
-          </span>
+        <span className="product-card__emoji" aria-hidden="true">
+          {product.emoji}
+        </span>
         )}
         <div className="product-card__overlay" aria-hidden="true" />
       </div>

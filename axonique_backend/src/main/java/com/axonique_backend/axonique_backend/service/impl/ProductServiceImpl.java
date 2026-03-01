@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
     // ----- Private helpers -----
 
     /**
-     * OOP Encapsulation: the "find or throw" pattern is reused internally
+     * Encapsulation: the "find or throw" pattern is reused internally
      * and hidden from callers.
      */
     private Product findProductOrThrow(Long id) {

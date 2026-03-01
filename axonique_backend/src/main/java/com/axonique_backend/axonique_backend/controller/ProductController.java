@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 /**
- * ProductController — REST controller for the product catalogue.
+ * REST controller for the product catalogue.
  *
  * SOLID S (Single Responsibility): handles HTTP input/output only. All business logic is delegated to ProductService.
  * SOLID D (Dependency Inversion): depends on ProductService interface, not ProductServiceImpl.
