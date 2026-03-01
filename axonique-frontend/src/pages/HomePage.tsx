@@ -1,21 +1,32 @@
 // SCRUM-14 — Homepage Layout
 // Hero section, featured products, collections, and why-us
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PRODUCTS } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
+import type { Product } from '../types';
 import './HomePage.css';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [toast, setToast] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const newest = PRODUCTS.filter((p) =>
+  useEffect(() => {
+    fetch('http://localhost:8080/api/products')
+      .then((res) => res.json())
+      .then((data) => setProducts(data.data || data))
+      .catch((err) => {
+        console.error('Failed to fetch products:', err);
+        setToast('Failed to load products');
+      });
+  }, []);
+
+  const newest = products.filter((p) =>
     p.name.includes('Timeless Tee') || p.name.includes('Impossible Tee')
   );
-  const featured = PRODUCTS.filter((p) =>
+  const featured = products.filter((p) =>
     p.name.includes('Phantom Tee') || p.name.includes('Xenonix Tee')
   );
 
@@ -80,12 +91,16 @@ export default function HomePage() {
           </div>
           <div className="collections-grid">
             <div className="collection-card" onClick={() => navigate('/catalog')} role="button" tabIndex={0}>
-              <div className="collection-card__icon">✨</div>
+              <div className="collection-card__image">
+                <img src="https://res.cloudinary.com/dimdro5dm/image/upload/v1772361719/MPPxAXO_9721.jpg_1_zjtm6g.jpg" alt="Ascension Collection" />
+              </div>
               <h3 className="collection-card__title">Ascension</h3>
               <p className="collection-card__desc">Elevate your style with premium pieces</p>
             </div>
             <div className="collection-card" onClick={() => navigate('/catalog')} role="button" tabIndex={0}>
-              <div className="collection-card__icon">🌙</div>
+              <div className="collection-card__image">
+                <img src="https://res.cloudinary.com/dimdro5dm/image/upload/v1772361709/DSC08858_bzwbc5.png" alt="Night Crawler Collection" />
+              </div>
               <h3 className="collection-card__title">Night Crawler</h3>
               <p className="collection-card__desc">Dark and bold streetwear essentials</p>
             </div>

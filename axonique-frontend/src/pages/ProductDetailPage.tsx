@@ -1,30 +1,37 @@
 // SCRUM-17 — Product Detail Page UI
 // Large image, name, price, description, size selection, add-to-cart
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { PRODUCTS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import Toast from '../components/Toast';
+import type { Product } from '../types';
 import './ProductDetailPage.css';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [toast, setToast] = useState('');
 
-  const product = PRODUCTS.find((p) => p.id === Number(id));
+  useEffect(() => {
+    if (!id) return;
+    fetch(`http://localhost:8080/api/products/${id}`)
+      .then((res) => res.json())
+      .then((data) => setProduct(data.data || data))
+      .catch((err) => {
+        console.error('Failed to fetch product:', err);
+        setToast('Failed to load product');
+      });
+  }, [id]);
 
   if (!product) {
     return (
       <main className="page">
         <div className="container" style={{ padding: '5rem 2rem', textAlign: 'center' }}>
-          <p style={{ color: 'var(--muted)' }}>Product not found.</p>
-          <button className="btn btn-outline btn-sm" style={{ marginTop: '1rem' }} onClick={() => navigate('/catalog')}>
-            ← Back to Catalog
-          </button>
+          <p style={{ color: 'var(--muted)' }}>Loading...</p>
         </div>
       </main>
     );
@@ -49,8 +56,18 @@ export default function ProductDetailPage() {
 
         <div className="detail-grid">
           {/* Product image */}
-          <div className="detail-img" aria-hidden="true">
-            {product.emoji}
+          <div className="detail-img">
+            {product.imageUrl ? (
+              <img 
+                src={product.imageUrl} 
+                alt={product.name}
+                className="detail-product-image"
+              />
+            ) : (
+              <div aria-hidden="true" style={{ fontSize: '8rem' }}>
+                {product.emoji}
+              </div>
+            )}
           </div>
 
           {/* Product info */}

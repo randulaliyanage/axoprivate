@@ -6,6 +6,7 @@ export interface Product {
   category: string;
   price: number;
   emoji: string;
+  imageUrl?: string;
   badge: string | null;
   sizes: string[];
   desc: string;

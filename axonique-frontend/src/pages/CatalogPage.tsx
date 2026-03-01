@@ -2,9 +2,9 @@
 // All products in a grid with category filters and sort controls
 
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { PRODUCTS } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
+import type { Product } from '../types';
 import './CatalogPage.css';
 
 type SortOption = 'featured' | 'new-to-old' | 'old-to-new' | 'low-to-high' | 'high-to-low';
@@ -20,10 +20,22 @@ const SORT_LABELS: Record<SortOption, string> = {
 
 export default function CatalogPage() {
   const [toast, setToast] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [availFilter, setAvailFilter] = useState<AvailFilter>('all');
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+
+  // Fetch products from API
+  useEffect(() => {
+    fetch('http://localhost:8080/api/products')
+      .then((res) => res.json())
+      .then((data) => setProducts(data.data || data))
+      .catch((err) => {
+        console.error('Failed to fetch products:', err);
+        setToast('Failed to load products');
+      });
+  }, []);
 
   // Close dropdowns on outside click
   const barRef = useRef<HTMLDivElement>(null);
@@ -37,25 +49,25 @@ export default function CatalogPage() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const categories = ['All', ...Array.from(new Set(PRODUCTS.map((p) => p.category)))];
+  const categories = ['All', ...Array.from(new Set(products.map((p) => p.category)))];
 
   const filteredProducts = useMemo(() => {
     let list = categoryFilter === 'All'
-      ? [...PRODUCTS]
-      : PRODUCTS.filter((p) => p.category === categoryFilter);
+      ? [...products]
+      : products.filter((p) => p.category === categoryFilter);
 
     // Availability (all products treated as in-stock)
     if (availFilter === 'out-of-stock') list = [];
 
     // Sort
     switch (sortBy) {
-      case 'low-to-high':  list.sort((a, b) => a.price - b.price); break;
-      case 'high-to-low':  list.sort((a, b) => b.price - a.price); break;
-      case 'new-to-old':   list.reverse(); break;
-      case 'old-to-new':   list.sort((a, b) => a.id - b.id); break;
+      case 'low-to-high': list.sort((a, b) => a.price - b.price); break;
+      case 'high-to-low': list.sort((a, b) => b.price - a.price); break;
+      case 'new-to-old': list.reverse(); break;
+      case 'old-to-new': list.sort((a, b) => a.id - b.id); break;
     }
     return list;
-  }, [categoryFilter, availFilter, sortBy]);
+  }, [products, categoryFilter, availFilter, sortBy]);
 
   const hasActiveFilters = availFilter !== 'all';
 
