@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  *
  *  Inheritance: Product, Order, CartItem extend this
  *  Encapsulation: id and audit fields are managed here, not duplicated
- *  SOLID (Single Responsibility): only handles identity + auditing
+ *  (Single Responsibility): only handles identity + auditing
  */
 
 @Getter
