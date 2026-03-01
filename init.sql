@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Axonique product catalogue
+-- Axonique products
 INSERT IGNORE INTO products (id, name, category, price, description, emoji, badge, image_url, in_stock, sizes_raw) VALUES
   (1,  'Timeless Tee (220 GSM)',   'T-Shirts', 2490.00, 'Premium quality Timeless Tee crafted from 220 GSM fabric. Comfortable fit with a classic design perfect for everyday wear. Durable and long-lasting with superior comfort.',   '👕', 'New',      'https://res.cloudinary.com/dimdro5dm/image/upload/v1772361691/Artboard_2_1_hnmmx0.png', TRUE, 'XS,S,M,L,XL,XXL'),
   (2,  'Impossible Tee (220 GSM)', 'T-Shirts', 2490.00, 'The legendary Impossible Tee made from 220 GSM premium cotton. Perfect as a statement piece or everyday essential. Superior quality and durability.',                         '👕', 'New',      'https://res.cloudinary.com/dimdro5dm/image/upload/v1772361685/Artboard_1_1_qk5nj4.png', TRUE, 'XS,S,M,L,XL,XXL'),
