@@ -35,6 +35,18 @@ export default function HomePage() {
     <main className="page">
       {/* ---- Hero ---- */}
       <div className="hero">
+        <div className="hero__images" aria-hidden="true">
+          <img
+            className="hero__image hero__image--left"
+            src="https://res.cloudinary.com/dimdro5dm/image/upload/v1772361719/MPPxAXO_9721.jpg_1_zjtm6g.jpg"
+            alt=""
+          />
+          <img
+            className="hero__image hero__image--right"
+            src="https://res.cloudinary.com/dimdro5dm/image/upload/v1772361717/MPPxAXO_9703.jpg_wfcr3c.jpg"
+            alt=""
+          />
+        </div>
         <div className="hero__content">
           <div className="hero__tag">Our New <em>Ascension</em> Collection is out</div>
           <h1 className="hero__title">
