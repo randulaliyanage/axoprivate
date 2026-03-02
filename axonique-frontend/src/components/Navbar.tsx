@@ -32,7 +32,11 @@ export default function Navbar() {
       <nav className="navbar" aria-label="Main navigation">
         {/* Logo */}
         <button className="navbar__logo" onClick={() => handleNav('/')} aria-label="AXO — Go to homepage">
-          AXO
+          <img
+            className="navbar__logo-image"
+            src="https://res.cloudinary.com/dimdro5dm/image/upload/v1772429380/Whisk_609d914e87483a88410498009f0cb04bdr_fohtih.png"
+            alt="AXO logo"
+          />
         </button>
 
         {/* Desktop Links */}
