@@ -2,6 +2,7 @@
 // All products in a grid with category filters and sort controls
 
 import { useState, useMemo, useEffect, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
 import type { Product } from '../types';
@@ -18,7 +19,14 @@ const SORT_LABELS: Record<SortOption, string> = {
   'high-to-low': 'Price: High to Low',
 };
 
+const COLLECTION_FILTERS: Record<string, string[]> = {
+  ascension: ['Timeless', 'Impossible'],
+  'night-crawler': ['Phantom', 'Xenonix'],
+};
+
 export default function CatalogPage() {
+  const navigate = useNavigate();
+  const { collectionId } = useParams();
   const [toast, setToast] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -50,11 +58,20 @@ export default function CatalogPage() {
   }, []);
 
   const categories = ['All', ...Array.from(new Set(products.map((p) => p.category)))];
+  const collectionKeywords = collectionId ? COLLECTION_FILTERS[collectionId] : undefined;
 
   const filteredProducts = useMemo(() => {
-    let list = categoryFilter === 'All'
-      ? [...products]
-      : products.filter((p) => p.category === categoryFilter);
+    let list = [...products];
+
+    if (collectionKeywords) {
+      list = list.filter((p) =>
+        collectionKeywords.some((keyword) => p.name.includes(keyword))
+      );
+    }
+
+    list = categoryFilter === 'All'
+      ? list
+      : list.filter((p) => p.category === categoryFilter);
 
     // Availability (all products treated as in-stock)
     if (availFilter === 'out-of-stock') list = [];
@@ -67,7 +84,7 @@ export default function CatalogPage() {
       case 'old-to-new': list.sort((a, b) => a.id - b.id); break;
     }
     return list;
-  }, [products, categoryFilter, availFilter, sortBy]);
+  }, [products, collectionKeywords, categoryFilter, availFilter, sortBy]);
 
   const hasActiveFilters = availFilter !== 'all';
 
@@ -79,8 +96,10 @@ export default function CatalogPage() {
       <section>
         <div className="container">
           <div className="section-header">
-            <div className="section-label">Browse All</div>
-            <h2 className="section-title">Products</h2>
+            <div className="section-label">{collectionKeywords ? 'Collection' : 'Browse All'}</div>
+            <h2 className="section-title">
+              {collectionKeywords ? `${collectionKeywords.join(' + ')} Collection` : 'Products'}
+            </h2>
           </div>
 
           {/* Category chips */}
@@ -163,7 +182,7 @@ export default function CatalogPage() {
             <div className="product-grid" role="list" aria-label="Product listing">
               {filteredProducts.map((p) => (
                 <div key={p.id} role="listitem">
-                  <ProductCard product={p} onToast={setToast} />
+                  <ProductCard product={p} />
                 </div>
               ))}
             </div>
@@ -175,6 +194,12 @@ export default function CatalogPage() {
               </button>
             </div>
           )}
+
+          <div className="catalog-wishlist-cta">
+            <button className="btn btn-outline" onClick={() => navigate('/wishlist')}>
+              Go to Wishlist →
+            </button>
+          </div>
         </div>
       </section>
 
