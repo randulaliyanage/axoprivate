@@ -84,11 +84,19 @@
 .product-card__footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
+  gap: 0.8rem;
 }
 
 .product-card__price {
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--accent);
+}
+
+.product-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }

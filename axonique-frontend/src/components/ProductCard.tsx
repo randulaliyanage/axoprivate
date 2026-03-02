@@ -2,22 +2,27 @@
 
 import { useNavigate } from 'react-router-dom';
 import type { Product } from '../types';
-import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import './ProductCard.css';
 
 interface ProductCardProps {
   product: Product;
-  onToast: (msg: string) => void;
 }
 
-export default function ProductCard({ product, onToast }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem } = useWishlist();
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addItem(product, product.sizes[0]);
-    onToast(`✓ ${product.name} added to cart`);
+    navigate(`/product/${product.id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleWishlistAdd = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const added = addItem(product);
+    window.alert(added ? `✓ ${product.name} added to wishlist` : `${product.name} is already in wishlist`);
   };
 
   const handleViewDetails = () => {
@@ -55,13 +60,22 @@ export default function ProductCard({ product, onToast }: ProductCardProps) {
         <div className="product-card__name">{product.name}</div>
         <div className="product-card__footer">
           <div className="product-card__price">Rs {product.price.toLocaleString()}</div>
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={handleQuickAdd}
-            aria-label={`Quick add ${product.name} to cart`}
-          >
-            Add →
-          </button>
+          <div className="product-card__actions">
+            <button
+              className="btn btn-outline btn-sm"
+              onClick={handleWishlistAdd}
+              aria-label={`Add ${product.name} to wishlist`}
+            >
+              ♡
+            </button>
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={handleQuickAdd}
+              aria-label={`View details for ${product.name}`}
+            >
+              Add →
+            </button>
+          </div>
         </div>
       </div>
     </div>
