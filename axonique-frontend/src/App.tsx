@@ -8,43 +8,58 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 import ContactPage from './pages/ContactPage';
+import ShippingPolicyPage from './pages/ShippingPolicyPage';
+import RefundPolicyPage from './pages/RefundPolicyPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import WishlistPage from './pages/WishlistPage';
 
 export default function App() {
   return (
     <BrowserRouter>
-      <CartProvider>
-        {/* SCRUM-15: Navbar is mounted on every page */}
-        <Navbar />
+      <WishlistProvider>
+        <CartProvider>
+          <Navbar />
 
-        <Routes>
-          {/* SCRUM-14 */}
-          <Route path="/" element={<HomePage />} />
+          <Routes>
+            
+            <Route path="/" element={<HomePage />} />
 
-          {/* SCRUM-16 */}
-          <Route path="/catalog" element={<CatalogPage />} />
+            
+            <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/catalog/collection/:collectionId" element={<CatalogPage />} />
 
-          {/* SCRUM-17 */}
-          <Route path="/product/:id" element={<ProductDetailPage />} />
+            
+            <Route path="/product/:id" element={<ProductDetailPage />} />
 
-          {/* SCRUM-18 */}
-          <Route path="/cart" element={<CartPage />} />
+            
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
 
-          {/* Extra pages */}
-          <Route path="/contact" element={<ContactPage />} />
+            
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/shipping" element={<ShippingPolicyPage />} />
+            <Route path="/refund" element={<RefundPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
 
-          {/* Fallback */}
-          <Route path="*" element={<HomePage />} />
-        </Routes>
+            {/* Fallback */}
+            <Route path="*" element={<HomePage />} />
+          </Routes>
 
-        <Footer />
-      </CartProvider>
+          <Footer />
+        </CartProvider>
+      </WishlistProvider>
     </BrowserRouter>
   );
 }

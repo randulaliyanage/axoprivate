@@ -29,6 +29,7 @@ export default function Footer() {
         <p>© 2026, <strong>AXO</strong></p>
         <nav className="footer__links" aria-label="Footer navigation">
           <button onClick={() => navigate('/contact')}>Contact</button>
+          <button onClick={() => navigate('/privacy')}>Privacy policy</button>
           <button onClick={() => navigate('/shipping')}>Shipping policy</button>
           <button onClick={() => navigate('/refund')}>Refund policy</button>
           <button onClick={() => navigate('/terms')}>Terms of service</button>

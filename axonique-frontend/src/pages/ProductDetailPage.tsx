@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import Toast from '../components/Toast';
 import type { Product } from '../types';
 import './ProductDetailPage.css';
@@ -12,6 +13,7 @@ export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { addItem: addToWishlist } = useWishlist();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [toast, setToast] = useState('');
@@ -44,6 +46,15 @@ export default function ProductDetailPage() {
     }
     addItem(product, selectedSize);
     setToast(`✓ ${product.name} added to cart`);
+  };
+
+  const handleAddToWishlist = () => {
+    const added = addToWishlist(product);
+    setToast(added ? `✓ ${product.name} added to wishlist` : `${product.name} is already in wishlist`);
+  };
+
+  const handleShareComingSoon = () => {
+    setToast('Share product option coming soon');
   };
 
   return (
@@ -100,8 +111,8 @@ export default function ProductDetailPage() {
 
             {/* Secondary actions */}
             <div className="detail-actions">
-              <button className="btn btn-outline btn-sm">♡ Wishlist</button>
-              <button className="btn btn-outline btn-sm">⤢ Share</button>
+              <button className="btn btn-outline btn-sm" onClick={handleAddToWishlist}>♡ Wishlist</button>
+              <button className="btn btn-outline btn-sm" onClick={handleShareComingSoon}>⤢ Share</button>
             </div>
           </div>
         </div>
