@@ -126,7 +126,7 @@ export default function CartPage() {
               </div>
 
               <div className="summary-actions">
-                <button className="btn btn-primary btn-full">
+                <button className="btn btn-primary btn-full" onClick={() => navigate('/checkout')}>
                   Checkout →
                 </button>
                 <button
