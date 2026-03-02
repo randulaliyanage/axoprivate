@@ -32,7 +32,6 @@ import lombok.RequiredArgsConstructor;
  *   not concrete classes.
  * SOLID L: substitutable for OrderService in any context.
  *
- * OOP:
  *  - Encapsulation: complex order-building logic is in a private method.
  *  - Composition: builds Order by composing OrderItems using OrderItem.from().
  */

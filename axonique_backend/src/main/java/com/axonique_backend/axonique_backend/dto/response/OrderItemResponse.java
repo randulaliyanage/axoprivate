@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * OrderItemResponse — outbound DTO for a single order line item.
+ * outbound DTO for a single order line item.
  */
 @Data
 @Builder

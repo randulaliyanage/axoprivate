@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * OrderResponse — outbound DTO for a full order.
+ *outbound DTO for a full order.
  */
 @Data
 @Builder

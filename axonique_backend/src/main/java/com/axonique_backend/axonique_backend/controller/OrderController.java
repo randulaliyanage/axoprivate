@@ -14,7 +14,7 @@ import com.axonique_backend.axonique_backend.service.interfaces.OrderService;
 
 
 /**
- * OrderController — REST controller for placing and managing orders.
+ * REST controller for placing and managing orders.
  *
  * Maps to SCRUM-18 (Shopping Cart / Checkout).
  *

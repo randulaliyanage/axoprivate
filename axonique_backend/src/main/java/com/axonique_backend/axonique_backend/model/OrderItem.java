@@ -20,7 +20,6 @@ import lombok.Setter;
 /**
  * OrderItem — a single line item inside an Order.
  *
- * OOP:
  *  - Inheritance: extends BaseEntity
  *  - Composition: belongs to Order, references Product by snapshot data
  *

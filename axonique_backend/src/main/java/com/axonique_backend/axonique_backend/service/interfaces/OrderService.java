@@ -6,7 +6,7 @@ import com.axonique_backend.axonique_backend.model.OrderStatus;
 import com.axonique_backend.axonique_backend.dto.response.OrderResponse;
 
 /**
- * OrderService — interface defining the order feature contract.
+ * interface defining the order feature contract.
  *
  * SOLID I: separated from ProductService — no coupling between features.
  * SOLID D: controllers depend on this interface, not the implementation.

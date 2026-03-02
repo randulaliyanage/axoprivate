@@ -10,7 +10,7 @@ import com.axonique_backend.axonique_backend.model.Order;
 import com.axonique_backend.axonique_backend.model.OrderItem;
 
 /**
- * OrderMapper — converts between Order domain models and response DTOs.
+ * converts between Order domain models and response DTOs.
  *
  * SOLID S: mapping logic isolated from service and controller concerns.
  * Encapsulation: callers don't need to know the mapping details.

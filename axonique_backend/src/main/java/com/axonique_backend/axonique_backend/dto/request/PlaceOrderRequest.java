@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * PlaceOrderRequest — customer submits this to create an order from their cart.
+ * customer submits this to create an order from their cart.
  *
  * SOLID S: only carries the data needed to place an order.
  * OOP Encapsulation: nested list of CartItemRequests validated with @Valid.

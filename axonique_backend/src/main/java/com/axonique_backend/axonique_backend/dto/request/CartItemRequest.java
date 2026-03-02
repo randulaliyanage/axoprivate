@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 /**
- * CartItemRequest — represents a single item the customer wants to add.
+ * represents a single item the customer wants to add.
  *
  * SOLID S: pure data carrier with validation constraints.
  */

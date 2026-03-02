@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Order — represents a customer's placed order.
  *
- * OOP:
  *  - Inheritance: extends BaseEntity
  *  - Composition: contains a list of OrderItems
  *  - Encapsulation: status transitions guarded by business logic in OrderService

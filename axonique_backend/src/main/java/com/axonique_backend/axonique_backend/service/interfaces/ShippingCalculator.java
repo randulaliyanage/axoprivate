@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
 /**
- * ShippingCalculator — encapsulates shipping fee business logic.
+ * encapsulates shipping fee business logic.
  *
  * SOLID S (Single Responsibility): fee calculation is its own concern,
  *   extracted from OrderService so it can change independently.
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * SOLID O (Open/Closed): to change the fee structure, extend this class
  *   or swap it — no other class needs to change.
  *
- * OOP Encapsulation: the threshold and fee amounts are private constants.
+ * Encapsulation: the threshold and fee amounts are private constants.
  */
 @Component
 public class ShippingCalculator {

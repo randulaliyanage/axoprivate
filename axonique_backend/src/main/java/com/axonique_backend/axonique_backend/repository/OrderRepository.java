@@ -8,7 +8,7 @@ import com.axonique_backend.axonique_backend.model.Order;
 import com.axonique_backend.axonique_backend.model.OrderStatus;
 
 /**
- * OrderRepository — data access layer for Orders.
+ * data access layer for Orders.
  *
  * SOLID D: services depend on this abstraction, not a concrete DAO.
  * SOLID S: only handles order persistence queries.
