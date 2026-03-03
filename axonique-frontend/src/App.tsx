@@ -15,6 +15,10 @@ import CatalogPage from './pages/CatalogPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import ContactPage from './pages/ContactPage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 export default function App() {
   return (
@@ -38,6 +42,10 @@ export default function App() {
 
           {/* Extra pages */}
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           {/* Fallback */}
           <Route path="*" element={<HomePage />} />

@@ -1,16 +1,23 @@
 // SCRUM-15 — Navigation Bar
 // Global navigation menu visible on all pages
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { authService } from '../services/authService';
 import './Navbar.css';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { totalItems } = useCart();
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  // Use state for authentication to ensure reactive updates
+  const [user, setUser] = useState(authService.getUser());
+  const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
 
   const links = [
     { label: 'Home', path: '/' },
@@ -18,13 +25,36 @@ export default function Navbar() {
     { label: 'Contact', path: '/contact' },
   ];
 
+  // Update auth state whenever the location changes
+  useEffect(() => {
+    setUser(authService.getUser());
+    setIsAuthenticated(authService.isAuthenticated());
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const isActive = (path: string) =>
     path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
   const handleNav = (path: string) => {
     navigate(path);
     setMenuOpen(false);
+    setProfileOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    setProfileOpen(false);
+    navigate('/');
   };
 
   return (
@@ -52,9 +82,40 @@ export default function Navbar() {
 
         {/* Right Actions */}
         <div className="navbar__actions">
-          <button className="navbar__signin" onClick={() => alert('Sign in coming soon')}>
-            Sign In
-          </button>
+          {/* Profile Dropdown */}
+          <div className="navbar__profile-container" ref={profileRef}>
+            <button
+              className={`navbar__profile-trigger ${profileOpen ? 'active' : ''}`}
+              onClick={() => setProfileOpen(!profileOpen)}
+              aria-label="Account menu"
+            >
+              👤 Profile
+            </button>
+
+            {profileOpen && (
+              <div className="navbar__dropdown">
+                {isAuthenticated && user && (
+                  <div className="navbar__dropdown-header">
+                    <span className="navbar__dropdown-user">Hi, {user.username}</span>
+                  </div>
+                )}
+                <div className="navbar__dropdown-links">
+                  {!isAuthenticated ? (
+                    <>
+                      <button onClick={() => handleNav('/signup')}>Sign up</button>
+                      <button onClick={() => handleNav('/signin')}>Log in</button>
+                      <button onClick={() => handleNav('/reset-password')}>Reset Password</button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={() => handleNav('/change-password')}>Change Password</button>
+                      <button className="logout" onClick={handleLogout}>Log out</button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
 
           <button
             className="navbar__cart"
@@ -100,6 +161,25 @@ export default function Navbar() {
         <button className="navbar__mobile-link" onClick={() => handleNav('/cart')}>
           Cart ({totalItems})
         </button>
+
+        <div className="navbar__mobile-auth">
+          {isAuthenticated && user && (
+            <div className="navbar__mobile-user">Hi, {user.username}</div>
+          )}
+
+          {!isAuthenticated ? (
+            <>
+              <button className="navbar__mobile-link" onClick={() => handleNav('/signup')}>Sign up</button>
+              <button className="navbar__mobile-link" onClick={() => handleNav('/signin')}>Log in</button>
+              <button className="navbar__mobile-link" onClick={() => handleNav('/reset-password')}>Reset Password</button>
+            </>
+          ) : (
+            <>
+              <button className="navbar__mobile-link" onClick={() => handleNav('/change-password')}>Change Password</button>
+              <button className="navbar__mobile-link logout" onClick={handleLogout}>Log out</button>
+            </>
+          )}
+        </div>
       </div>
     </>
   );

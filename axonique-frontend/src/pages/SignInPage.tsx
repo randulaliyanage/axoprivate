@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignInPage.css';
 import Modal from '../components/Modal';
+import { authService } from '../services/authService';
 
 export default function SignInPage() {
   const navigate = useNavigate();
@@ -33,13 +34,14 @@ export default function SignInPage() {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.text();
-
       if (response.ok) {
+        const data = await response.json();
+        authService.saveAuth(data.token, { username: data.username, email: data.email });
+
         setModal({
           isOpen: true,
           title: 'Login Successful',
-          message: data,
+          message: `Welcome back, ${data.username}!`,
           type: 'success'
         });
 
@@ -48,10 +50,11 @@ export default function SignInPage() {
           navigate('/');
         }, 1500);
       } else {
+        const errorText = await response.text();
         setModal({
           isOpen: true,
           title: 'Login Failed',
-          message: data || 'Invalid username or password.',
+          message: errorText || 'Invalid username or password.',
           type: 'error'
         });
       }
@@ -82,14 +85,14 @@ export default function SignInPage() {
 
         <form className="signin-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Username or Email</label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="Your username"
+              placeholder="Your username or email"
             />
           </div>
 
@@ -110,9 +113,14 @@ export default function SignInPage() {
           </button>
         </form>
 
-        <p className="signin-footer">
-          Don't have an account? <Link to="/signup">Sign up</Link>
-        </p>
+        <div className="signin-footer">
+          <p>
+            Don't have an account? <Link to="/signup">Sign up</Link>
+          </p>
+          <p className="change-password-link">
+            Joined AXO? <Link to="/change-password">Change Password</Link>
+          </p>
+        </div>
       </div>
 
       <Modal
