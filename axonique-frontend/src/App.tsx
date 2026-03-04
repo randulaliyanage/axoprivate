@@ -17,6 +17,10 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ContactPage from './pages/ContactPage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import ShippingPolicyPage from './pages/ShippingPolicyPage';
 import RefundPolicyPage from './pages/RefundPolicyPage';
 import TermsPage from './pages/TermsPage';
@@ -31,27 +35,26 @@ export default function App() {
           <Navbar />
 
           <Routes>
-            
             <Route path="/" element={<HomePage />} />
-
-            
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/catalog/collection/:collectionId" element={<CatalogPage />} />
-
-            
             <Route path="/product/:id" element={<ProductDetailPage />} />
-
-            
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-
-            
+            <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/contact" element={<ContactPage />} />
+
+            {/* Auth Pages */}
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/change-password" element={<ChangePasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+            {/* Policy Pages */}
             <Route path="/shipping" element={<ShippingPolicyPage />} />
             <Route path="/refund" element={<RefundPolicyPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/wishlist" element={<WishlistPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<HomePage />} />

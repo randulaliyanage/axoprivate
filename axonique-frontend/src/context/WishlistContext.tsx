@@ -5,6 +5,7 @@ import type { Product } from '../types';
 interface WishlistContextType {
   items: Product[];
   addItem: (product: Product) => boolean;
+  removeItem: (productId: number) => void;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
@@ -29,12 +30,16 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     return true;
   };
 
+  const removeItem = (productId: number) => {
+    setItems((prev) => prev.filter((item) => item.id !== productId));
+  };
+
   useEffect(() => {
     localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
   return (
-    <WishlistContext.Provider value={{ items, addItem }}>
+    <WishlistContext.Provider value={{ items, addItem, removeItem }}>
       {children}
     </WishlistContext.Provider>
   );
