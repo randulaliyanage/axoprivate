@@ -5,11 +5,23 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { authService } from '../services/authService';
+import Modal from './Modal';
 import './Navbar.css';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [modal, setModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: 'success' | 'error'
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'success'
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const { totalItems } = useCart();
@@ -54,6 +66,21 @@ export default function Navbar() {
   const handleLogout = () => {
     authService.logout();
     setProfileOpen(false);
+
+    // Immediate state update
+    setUser(null);
+    setIsAuthenticated(false);
+
+    setModal({
+      isOpen: true,
+      title: 'Logged Out',
+      message: 'You have been successfully logged out. See you soon!',
+      type: 'success'
+    });
+  };
+
+  const closeModal = () => {
+    setModal(prev => ({ ...prev, isOpen: false }));
     navigate('/');
   };
 
@@ -104,7 +131,6 @@ export default function Navbar() {
                     <>
                       <button onClick={() => handleNav('/signup')}>Sign up</button>
                       <button onClick={() => handleNav('/signin')}>Log in</button>
-                      <button onClick={() => handleNav('/reset-password')}>Reset Password</button>
                     </>
                   ) : (
                     <>
@@ -171,7 +197,6 @@ export default function Navbar() {
             <>
               <button className="navbar__mobile-link" onClick={() => handleNav('/signup')}>Sign up</button>
               <button className="navbar__mobile-link" onClick={() => handleNav('/signin')}>Log in</button>
-              <button className="navbar__mobile-link" onClick={() => handleNav('/reset-password')}>Reset Password</button>
             </>
           ) : (
             <>
@@ -181,6 +206,13 @@ export default function Navbar() {
           )}
         </div>
       </div>
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={closeModal}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </>
   );
 }

@@ -44,11 +44,6 @@ export default function SignInPage() {
           message: `Welcome back, ${data.username}!`,
           type: 'success'
         });
-
-        // Short delay to let user see the modal before redirecting
-        setTimeout(() => {
-          navigate('/');
-        }, 1500);
       } else {
         const errorText = await response.text();
         setModal({
@@ -80,7 +75,7 @@ export default function SignInPage() {
   return (
     <div className="page signin-page">
       <div className="container signin-container">
-        <h1 className="section-title">Sign In</h1>
+        <h1 className="section-title">Log In</h1>
         <p className="signin-subtitle">Welcome back to AXO.</p>
 
         <form className="signin-form" onSubmit={handleSubmit}>
@@ -109,7 +104,7 @@ export default function SignInPage() {
           </div>
 
           <button type="submit" className="signin-btn" disabled={isSubmitting}>
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
+            {isSubmitting ? 'Logging in...' : 'Log In'}
           </button>
         </form>
 
@@ -117,8 +112,8 @@ export default function SignInPage() {
           <p>
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
-          <p className="change-password-link">
-            Joined AXO? <Link to="/change-password">Change Password</Link>
+          <p className="reset-password-link">
+            Joined AXO? <Link to="/reset-password">Reset Password</Link>
           </p>
         </div>
       </div>

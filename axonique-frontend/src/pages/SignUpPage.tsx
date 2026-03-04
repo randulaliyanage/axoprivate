@@ -145,7 +145,7 @@ const SignUpPage: React.FC = () => {
   const closeModal = () => {
     setModal(prev => ({ ...prev, isOpen: false }));
     if (modal.type === 'success') {
-      navigate('/signin');
+      navigate('/');
     }
   };
 
