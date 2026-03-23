@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import type { BrandProfile } from '../types';
 import './BrandProfilePage.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 
 const isValidImageUrl = (url: string) =>
   !url || /\.(png|jpg|jpeg|webp)(\?.*)?$/i.test(url);

@@ -5,7 +5,7 @@ import { authService } from '../services/authService';
 import type { StaffActivity, Product } from '../types';
 import './StaffDashboardPage.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 
 function timeAgo(dateStr: string | null) {
   if (!dateStr) return '—';

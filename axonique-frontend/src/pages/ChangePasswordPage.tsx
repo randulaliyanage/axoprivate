@@ -45,7 +45,7 @@ export default function ChangePasswordPage() {
     const fetchQuestions = async () => {
         try {
             const authHeader = authService.getAuthHeader();
-            const response = await fetch('http://localhost:8080/api/auth/questions', {
+            const response = await fetch(''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'/api/auth/questions', {
                 headers: {
                     ...authHeader as any
                 }
@@ -82,7 +82,7 @@ export default function ChangePasswordPage() {
                 headers.append('Authorization', authHeader.Authorization);
             }
 
-            const response = await fetch('http://localhost:8080/api/auth/change-password', {
+            const response = await fetch(''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'/api/auth/change-password', {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({

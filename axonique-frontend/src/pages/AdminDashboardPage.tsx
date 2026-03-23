@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import type { DashboardMetrics, UserSummary } from '../types';
 import './AdminDashboardPage.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();

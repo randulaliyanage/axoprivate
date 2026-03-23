@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import type { Product } from '../types';
 import './InventoryPage.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 
 export default function InventoryPage() {
   const [products, setProducts] = useState<Product[]>([]);

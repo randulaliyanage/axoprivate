@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import type { Product } from '../types';
 import './ProductManagementPage.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 
 const BADGES = ['', 'New', 'Featured', 'Limited'];
 

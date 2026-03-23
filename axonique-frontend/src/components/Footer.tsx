@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import type { BrandProfile } from '../types';
 import './Footer.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 
 export default function Footer() {
   const [brand, setBrand] = useState<BrandProfile | null>(null);

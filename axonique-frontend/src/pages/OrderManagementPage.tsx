@@ -4,7 +4,7 @@ import { authService } from '../services/authService';
 import type { Order } from '../types';
 import './OrderManagementPage.css';
 
-const API = 'http://localhost:8080';
+const API = ''+(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')+'';
 const PAGE_SIZE = 10;
 
 const STATUS_COLORS: Record<string, string> = {
