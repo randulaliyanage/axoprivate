@@ -1,17 +1,19 @@
 // SCRUM-14 — Homepage Layout
 // Hero section, featured products, collections, and why-us
+// SCRUM-41 — Brand profile integration: discount banner + hero background
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
-import type { Product } from '../types';
+import type { Product, BrandProfile } from '../types';
 import './HomePage.css';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [toast, setToast] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
+  const [brand, setBrand] = useState<BrandProfile | null>(null);
 
   // Fetch products from API
   useEffect(() => {
@@ -24,6 +26,14 @@ export default function HomePage() {
       });
   }, []);
 
+  // Fetch brand profile
+  useEffect(() => {
+    fetch('http://localhost:8080/api/brand')
+      .then(r => r.json())
+      .then(d => setBrand(d.data || null))
+      .catch(() => {});
+  }, []);
+
   const newest = products.filter((p) =>
     p.name.includes('Timeless Tee') || p.name.includes('Timeless Hoodie') || p.name.includes('Timeless Cap') ||p.name.includes('Impossible Tee') || p.name.includes('Impossible Hoodie') || p.name.includes('Impossible Cap')
   );
@@ -33,8 +43,18 @@ export default function HomePage() {
 
   return (
     <main className="page">
+      {/* ---- Discount Banner ---- */}
+      {brand?.discountBannerActive && brand?.discountBannerText && (
+        <div className="discount-banner">
+          {brand.discountBannerText}
+        </div>
+      )}
+
       {/* ---- Hero ---- */}
-      <div className="hero">
+      <div
+        className="hero"
+        style={brand?.heroBannerUrl ? { backgroundImage: `url(${brand.heroBannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+      >
         <div className="hero__images" aria-hidden="true">
           <img
             className="hero__image hero__image--left"
@@ -148,6 +168,24 @@ export default function HomePage() {
               <p className="why-item__desc">Crafted to last through every season and trend</p>
             </div>
           </div>
+
+          {/* Brand copy from API */}
+          {(brand?.mission || brand?.vision) && (
+            <div className="brand-copy">
+              {brand.mission && (
+                <div className="brand-copy__item">
+                  <h4 className="brand-copy__label">Our Mission</h4>
+                  <p className="brand-copy__text">{brand.mission}</p>
+                </div>
+              )}
+              {brand.vision && (
+                <div className="brand-copy__item">
+                  <h4 className="brand-copy__label">Our Vision</h4>
+                  <p className="brand-copy__text">{brand.vision}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

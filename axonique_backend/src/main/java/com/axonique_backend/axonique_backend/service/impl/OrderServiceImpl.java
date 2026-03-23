@@ -80,6 +80,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponse> searchOrders(String searchTerm) {
+        return orderRepository.searchOrders(searchTerm)
+                .stream()
+                .map(orderMapper::toResponse)
+                .toList();
+    }
+
+    @Override
     public OrderResponse updateOrderStatus(Long id, OrderStatus newStatus) {
         Order order = findOrderOrThrow(id);
         validateStatusTransition(order.getStatus(), newStatus);

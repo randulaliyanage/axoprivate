@@ -54,15 +54,21 @@ public class OrderController {
     }
 
     /**
-     * GET /api/orders?email=customer@example.com
-     * Retrieve all orders for a customer.
+     * GET /api/orders?email=customer@example.com&search=<term>
+     * Retrieve all orders, optionally filtered by email or search term.
      */
     @GetMapping
     public ResponseEntity<ApiResponse<List<OrderResponse>>> getOrders(
-            @RequestParam(required = false) String email) {
-        List<OrderResponse> orders = email != null
-                ? orderService.getOrdersByEmail(email)
-                : orderService.getAllOrders();
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String search) {
+        List<OrderResponse> orders;
+        if (email != null && !email.isBlank()) {
+            orders = orderService.getOrdersByEmail(email);
+        } else if (search != null && !search.isBlank()) {
+            orders = orderService.searchOrders(search);
+        } else {
+            orders = orderService.getAllOrders();
+        }
         return ResponseEntity.ok(ApiResponse.ok("Orders retrieved", orders));
     }
 

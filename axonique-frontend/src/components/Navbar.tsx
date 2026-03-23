@@ -139,6 +139,14 @@ export default function Navbar() {
                     </>
                   ) : (
                     <>
+                      {user && (user.role === 'ADMIN' || user.role === 'STAFF') && (
+                        <button 
+                          className="dashboard-link"
+                          onClick={() => handleNav(user.role === 'ADMIN' ? '/admin/dashboard' : '/staff/dashboard')}
+                        >
+                          🚀 Dashboard
+                        </button>
+                      )}
                       <button onClick={() => handleNav('/change-password')}>Change Password</button>
                       <button className="logout" onClick={handleLogout}>Log out</button>
                     </>
@@ -205,6 +213,14 @@ export default function Navbar() {
             </>
           ) : (
             <>
+              {user && (user.role === 'ADMIN' || user.role === 'STAFF') && (
+                <button 
+                  className="navbar__mobile-link dashboard-link" 
+                  onClick={() => handleNav(user.role === 'ADMIN' ? '/admin/dashboard' : '/staff/dashboard')}
+                >
+                  🚀 Dashboard
+                </button>
+              )}
               <button className="navbar__mobile-link" onClick={() => handleNav('/change-password')}>Change Password</button>
               <button className="navbar__mobile-link logout" onClick={handleLogout}>Log out</button>
             </>

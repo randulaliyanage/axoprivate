@@ -217,3 +217,54 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ----- Discount Banner (SCRUM-41) ----- */
+.discount-banner {
+  background: var(--accent);
+  color: var(--bg);
+  text-align: center;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ----- Brand Copy (SCRUM-41) ----- */
+.brand-copy {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.brand-copy__item {
+  flex: 1;
+  min-width: 260px;
+  max-width: 420px;
+  text-align: left;
+}
+
+.brand-copy__label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.brand-copy__text {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+.collection-card:hover .collection-card__image img {
+  transform: scale(1.04);
+}

@@ -73,6 +73,15 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String sizesRaw;
 
+    /** Inventory management fields */
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer stockQuantity = 0;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer lowStockThreshold = 5;
+
     // ----- Computed helpers (no persistence) -----
 
     @Transient
@@ -83,5 +92,10 @@ public class Product extends BaseEntity {
 
     public void setSizes(List<String> sizes) {
         this.sizesRaw = String.join(",", sizes);
+    }
+
+    @Transient
+    public boolean isLowStock() {
+        return stockQuantity <= lowStockThreshold;
     }
 }

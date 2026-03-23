@@ -96,4 +96,15 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.ok(ApiResponse.noContent("Product deleted"));
     }
+
+    /**
+     * GET /api/products/categories
+     * Returns distinct list of category strings.
+     */
+    @GetMapping("/categories")
+    public ResponseEntity<ApiResponse<List<String>>> getCategories() {
+        List<String> categories = productService.getCategories();
+        return ResponseEntity.ok(ApiResponse.ok("Categories retrieved", categories));
+    }
 }
+

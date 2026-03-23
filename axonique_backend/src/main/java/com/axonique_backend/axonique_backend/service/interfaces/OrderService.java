@@ -21,5 +21,7 @@ public interface OrderService {
 
     List<OrderResponse> getAllOrders();
 
+    List<OrderResponse> searchOrders(String searchTerm);
+
     OrderResponse updateOrderStatus(Long id, OrderStatus newStatus);
 }

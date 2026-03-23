@@ -1,39 +1,63 @@
-// Shared Footer component
-
-import { useNavigate } from 'react-router-dom';
+// Footer — displays brand policies from API and social links
+import { useState, useEffect } from 'react';
+import type { BrandProfile } from '../types';
 import './Footer.css';
 
+const API = 'http://localhost:8080';
+
 export default function Footer() {
-  const navigate = useNavigate();
+  const [brand, setBrand] = useState<BrandProfile | null>(null);
+
+  useEffect(() => {
+    fetch(`${API}/api/brand`)
+      .then(r => r.json())
+      .then(d => setBrand(d.data || null))
+      .catch(() => {});
+  }, []);
 
   return (
     <footer className="footer">
-      {/* Newsletter */}
-      <div className="footer__newsletter">
-        <h2 className="footer__newsletter-title">Subscribe to our emails</h2>
-        <form
-          className="footer__newsletter-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            (e.target as HTMLFormElement).reset();
-            alert('✓ Successfully subscribed!');
-          }}
-        >
-          <input type="email" placeholder="Email" required aria-label="Email for newsletter" />
-          <button type="submit" aria-label="Subscribe">→</button>
-        </form>
+      <div className="footer__top">
+        <div className="footer__brand">
+          <span className="footer__logo">AXO</span>
+          <p className="footer__tagline">Premium streetwear for the bold.</p>
+          {brand?.mission && (
+            <p className="footer__mission">{brand.mission}</p>
+          )}
+        </div>
+
+        <div className="footer__links">
+          <h4 className="footer__heading">Shop</h4>
+          <ul>
+            <li><a href="/catalog">All Products</a></li>
+            <li><a href="/catalog/collection/ascension">Ascension</a></li>
+            <li><a href="/catalog/collection/night-crawler">Night Crawler</a></li>
+          </ul>
+        </div>
+
+        <div className="footer__links">
+          <h4 className="footer__heading">Help</h4>
+          <ul>
+            {brand?.policies ? (
+              <li>
+                <details>
+                  <summary>Store Policies</summary>
+                  <p className="footer__policies">{brand.policies}</p>
+                </details>
+              </li>
+            ) : (
+              <>
+                <li><a href="mailto:support@axonique.store">Contact Us</a></li>
+                <li><a href="#">Shipping Info</a></li>
+                <li><a href="#">Returns</a></li>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="footer__bottom">
-        <p>© 2026, <strong>AXO</strong></p>
-        <nav className="footer__links" aria-label="Footer navigation">
-          <button onClick={() => navigate('/contact')}>Contact</button>
-          <button onClick={() => navigate('/privacy')}>Privacy policy</button>
-          <button onClick={() => navigate('/shipping')}>Shipping policy</button>
-          <button onClick={() => navigate('/refund')}>Refund policy</button>
-          <button onClick={() => navigate('/terms')}>Terms of service</button>
-        </nav>
+        <p>© {new Date().getFullYear()} AXO Nique. All rights reserved.</p>
       </div>
     </footer>
   );

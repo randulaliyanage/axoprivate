@@ -2,6 +2,7 @@ package com.axonique_backend.axonique_backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -37,9 +39,14 @@ public class SecurityConfig {
                                                 .requestMatchers(org.springframework.http.HttpMethod.GET,
                                                                 "/api/products/**")
                                                 .permitAll()
+                                                .requestMatchers(org.springframework.http.HttpMethod.GET,
+                                                                "/api/brand")
+                                                .permitAll()
                                                 .requestMatchers(org.springframework.http.HttpMethod.POST,
                                                                 "/api/orders")
                                                 .permitAll()
+                                                .requestMatchers("/api/admin/**").authenticated()
+                                                .requestMatchers("/api/staff/**").authenticated()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
                 return http.build();
@@ -51,7 +58,7 @@ public class SecurityConfig {
                 configuration.setAllowedOrigins(
                                 java.util.Arrays.asList("http://localhost:5173", "http://127.0.0.1:5173"));
                 configuration.setAllowedMethods(
-                                java.util.Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+                                java.util.Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"));
                 configuration.setAllowedHeaders(java.util.Arrays.asList("Authorization", "Content-Type",
                                 "X-Requested-With",
                                 "Accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
