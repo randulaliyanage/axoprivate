@@ -81,7 +81,11 @@ export default function App() {
             <Route
               path="/admin/products"
               element={
+<<<<<<< HEAD
                 <ProtectedRoute requiredRoles={['ADMIN', 'STAFF']}>
+=======
+                <ProtectedRoute requiredRoles={['ADMIN']}>
+>>>>>>> dev
                   <ProductManagementPage />
                 </ProtectedRoute>
               }
@@ -99,7 +103,11 @@ export default function App() {
             <Route
               path="/staff/dashboard"
               element={
+<<<<<<< HEAD
                 <ProtectedRoute requiredRoles={['ADMIN', 'STAFF']}>
+=======
+                <ProtectedRoute requiredRoles={['ADMIN']}>
+>>>>>>> dev
                   <StaffDashboardPage />
                 </ProtectedRoute>
               }
