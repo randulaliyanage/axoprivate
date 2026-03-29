@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './SignInPage.css';
+import { useNavigate } from 'react-router-dom';
+import './SignInPage.css'; // Reuse styles
 import Modal from '../components/Modal';
 import { authService } from '../services/authService';
 
-export default function SignInPage() {
+export default function StaffSignInPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -36,6 +36,17 @@ export default function SignInPage() {
 
       if (response.ok) {
         const data = await response.json();
+        
+        if (data.role !== 'STAFF' && data.role !== 'ADMIN') {
+            setModal({
+                isOpen: true,
+                title: 'Access Denied',
+                message: 'This portal is for staff members only.',
+                type: 'error'
+            });
+            return;
+        }
+
         authService.saveAuth(data.token, { 
           username: data.username, 
           email: data.email, 
@@ -44,8 +55,8 @@ export default function SignInPage() {
 
         setModal({
           isOpen: true,
-          title: 'Login Successful',
-          message: `Welcome back, ${data.username}!`,
+          title: 'Staff Login Successful',
+          message: `Welcome to the Operations Hub, ${data.username}!`,
           type: 'success'
         });
       } else {
@@ -53,7 +64,7 @@ export default function SignInPage() {
         setModal({
           isOpen: true,
           title: 'Login Failed',
-          message: errorText || 'Invalid username or password.',
+          message: errorText || 'Invalid credentials.',
           type: 'error'
         });
       }
@@ -61,7 +72,7 @@ export default function SignInPage() {
       setModal({
         isOpen: true,
         title: 'Connection Error',
-        message: 'Could not connect to the server. Please try again later.',
+        message: 'Could not connect to the staff server.',
         type: 'error'
       });
     } finally {
@@ -75,35 +86,33 @@ export default function SignInPage() {
       const user = authService.getUser();
       if (user?.role === 'ADMIN') {
         navigate('/admin/dashboard');
-      } else if (user?.role === 'STAFF') {
-        navigate('/staff/dashboard');
       } else {
-        navigate('/');
+        navigate('/staff/dashboard');
       }
     }
   };
 
   return (
-    <div className="page signin-page">
+    <div className="page signin-page staff-signin">
       <div className="container signin-container">
-        <h1 className="section-title">Log In</h1>
-        <p className="signin-subtitle">Welcome back to AXO.</p>
+        <h1 className="section-title">Staff Portal</h1>
+        <p className="signin-subtitle">Log in to manage operations.</p>
 
         <form className="signin-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Username or Email</label>
+            <label htmlFor="username">Staff Identifier</label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="Your username or email"
+              placeholder="Username or Staff Email"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Security Key</label>
             <input
               type="password"
               id="password"
@@ -114,17 +123,14 @@ export default function SignInPage() {
             />
           </div>
 
-          <button type="submit" className="signin-btn" disabled={isSubmitting}>
-            {isSubmitting ? 'Logging in...' : 'Log In'}
+          <button type="submit" className="signin-btn staff-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Authenticating...' : 'Enter Hub →'}
           </button>
         </form>
 
         <div className="signin-footer">
           <p>
-            Don't have an account? <Link to="/signup">Sign up</Link>
-          </p>
-          <p className="reset-password-link">
-            Joined AXO? <Link to="/reset-password">Reset Password</Link>
+            Issues logging in? Contact System Admin.
           </p>
         </div>
       </div>

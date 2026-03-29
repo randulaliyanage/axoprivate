@@ -23,6 +23,8 @@ import StaffDashboardPage from './pages/StaffDashboardPage';
 import OrderManagementPage from './pages/OrderManagementPage';
 import ProductManagementPage from './pages/ProductManagementPage';
 import BrandProfilePage from './pages/BrandProfilePage';
+import StaffSignInPage from './pages/StaffSignInPage';
+import WishlistPage from './pages/WishlistPage';
 
 export default function App() {
   return (
@@ -39,14 +41,16 @@ export default function App() {
                   <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/signin" element={<SignInPage />} />
+                    <Route path="/staff/signin" element={<StaffSignInPage />} />
                     <Route path="/signup" element={<SignUpPage />} />
                     {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} /> */}
                     <Route path="/catalog" element={<CatalogPage />} />
                     {/* <Route path="/catalog/collection/:slug" element={<CollectionPage />} /> */}
-                    <Route path="/catalog/:id" element={<ProductPage />} />
+                    <Route path="/product/:id" element={<ProductPage />} />
                     <Route path="/cart" element={<CartPage />} />
                     <Route path="/checkout" element={<CheckoutPage />} />
                     {/* <Route path="/order-confirmation" element={<OrderConfirmationPage />} /> */}
+                    <Route path="/wishlist" element={<WishlistPage />} />
                   </Routes>
                   <Footer />
                 </>
@@ -81,11 +85,7 @@ export default function App() {
             <Route
               path="/admin/products"
               element={
-<<<<<<< HEAD
                 <ProtectedRoute requiredRoles={['ADMIN', 'STAFF']}>
-=======
-                <ProtectedRoute requiredRoles={['ADMIN']}>
->>>>>>> dev
                   <ProductManagementPage />
                 </ProtectedRoute>
               }
@@ -103,11 +103,7 @@ export default function App() {
             <Route
               path="/staff/dashboard"
               element={
-<<<<<<< HEAD
                 <ProtectedRoute requiredRoles={['ADMIN', 'STAFF']}>
-=======
-                <ProtectedRoute requiredRoles={['ADMIN']}>
->>>>>>> dev
                   <StaffDashboardPage />
                 </ProtectedRoute>
               }

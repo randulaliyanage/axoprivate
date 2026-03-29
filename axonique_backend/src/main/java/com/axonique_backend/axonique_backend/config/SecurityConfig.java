@@ -40,13 +40,25 @@ public class SecurityConfig {
                                                                 "/api/products/**")
                                                 .permitAll()
                                                 .requestMatchers(org.springframework.http.HttpMethod.GET,
+                                                                "/api/admin/dashboard/metrics")
+                                                .permitAll()
+                                                .requestMatchers(org.springframework.http.HttpMethod.POST,
+                                                                "/api/products", "/api/products/**")
+                                                .hasAnyRole("ADMIN", "STAFF")
+                                                .requestMatchers(org.springframework.http.HttpMethod.PUT,
+                                                                "/api/products", "/api/products/**")
+                                                .hasAnyRole("ADMIN", "STAFF")
+                                                .requestMatchers(org.springframework.http.HttpMethod.DELETE,
+                                                                "/api/products", "/api/products/**")
+                                                .hasAnyRole("ADMIN", "STAFF")
+                                                .requestMatchers(org.springframework.http.HttpMethod.GET,
                                                                 "/api/brand")
                                                 .permitAll()
                                                 .requestMatchers(org.springframework.http.HttpMethod.POST,
                                                                 "/api/orders")
                                                 .permitAll()
-                                                .requestMatchers("/api/admin/**").authenticated()
-                                                .requestMatchers("/api/staff/**").authenticated()
+                                                .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "STAFF")
+                                                .requestMatchers("/api/staff/**").hasAnyRole("ADMIN", "STAFF")
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
                 return http.build();

@@ -6,16 +6,9 @@ import './AdminDashboardPage.css';
 
 const API = '' + (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080') + '';
 
-function timeAgo(dateStr: string) {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
 
 export default function AdminDashboardPage() {
+  const role = authService.getRole();
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [users, setUsers] = useState<UserSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -118,8 +111,18 @@ export default function AdminDashboardPage() {
               <div className="kpi-grid">
                 <div className="kpi-card">
                   <div className="kpi-icon">💰</div>
-                  <div className="kpi-value">LKR {metrics?.totalRevenue?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</div>
-                  <div className="kpi-label">Total Revenue</div>
+                  {role === 'ADMIN' && (
+                    <>
+                      <div className="kpi-value">LKR {metrics?.totalRevenue?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</div>
+                      <div className="kpi-label">Total Revenue</div>
+                    </>
+                  )}
+                  {role === 'STAFF' && (
+                    <>
+                      <div className="kpi-value">***</div>
+                      <div className="kpi-label">Revenue (Hidden)</div>
+                    </>
+                  )}
                 </div>
                 <div className="kpi-card">
                   <div className="kpi-icon">📦</div>
@@ -133,40 +136,52 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="kpi-card kpi-card--profit">
                   <div className="kpi-icon">📈</div>
-                  <div className="kpi-value">LKR {metrics?.estimatedProfit?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</div>
-                  <div className="kpi-label">Estimated Profit</div>
+                  {role === 'ADMIN' && (
+                    <>
+                      <div className="kpi-value">LKR {metrics?.estimatedProfit?.toLocaleString('en-LK', { minimumFractionDigits: 2 })}</div>
+                      <div className="kpi-label">Estimated Profit</div>
+                    </>
+                  )}
+                  {role === 'STAFF' && (
+                    <>
+                      <div className="kpi-value">***</div>
+                      <div className="kpi-label">Profit (Hidden)</div>
+                    </>
+                  )}
                 </div>
               </div>
 
               <div className="charts-row">
                 {/* Bar Chart */}
-                <div className="chart-card">
-                  <h2 className="chart-title">Revenue vs Cost (Last 6 Months)</h2>
-                  {last6Months.length === 0 ? (
-                    <p className="chart-empty">No data available</p>
-                  ) : (
-                    <div className="bar-chart">
-                      {last6Months.map((m) => {
-                        const cost = m.revenue * 0.6;
-                        const revH = (m.revenue / maxRevenue) * 100;
-                        const costH = (cost / maxRevenue) * 100;
-                        return (
-                          <div key={m.month} className="bar-group">
-                            <div className="bars">
-                              <div className="bar bar--revenue" style={{ height: `${revH}%` }} title={`Revenue: ${m.revenue}`} />
-                              <div className="bar bar--cost" style={{ height: `${costH}%` }} title={`Cost: ${cost.toFixed(0)}`} />
+                {role === 'ADMIN' && (
+                  <div className="chart-card">
+                    <h2 className="chart-title">Revenue vs Cost (Last 6 Months)</h2>
+                    {last6Months.length === 0 ? (
+                      <p className="chart-empty">No data available</p>
+                    ) : (
+                      <div className="bar-chart">
+                        {last6Months.map((m) => {
+                          const cost = m.revenue * 0.6;
+                          const revH = (m.revenue / maxRevenue) * 100;
+                          const costH = (cost / maxRevenue) * 100;
+                          return (
+                            <div key={m.month} className="bar-group">
+                              <div className="bars">
+                                <div className="bar bar--revenue" style={{ height: `${revH}%` }} title={`Revenue: ${m.revenue}`} />
+                                <div className="bar bar--cost" style={{ height: `${costH}%` }} title={`Cost: ${cost.toFixed(0)}`} />
+                              </div>
+                              <div className="bar-label">{m.month.slice(5)}</div>
                             </div>
-                            <div className="bar-label">{m.month.slice(5)}</div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
+                    )}
+                    <div className="chart-legend">
+                      <span className="legend-dot" style={{ background: '#fff' }} /> Revenue
+                      <span className="legend-dot" style={{ background: '#555', marginLeft: '1rem' }} /> Cost
                     </div>
-                  )}
-                  <div className="chart-legend">
-                    <span className="legend-dot" style={{ background: '#fff' }} /> Revenue
-                    <span className="legend-dot" style={{ background: '#555', marginLeft: '1rem' }} /> Cost
                   </div>
-                </div>
+                )}
 
                 {/* Doughnut Chart */}
                 <div className="chart-card">
@@ -195,60 +210,62 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* Users Table */}
-              <div className="table-card">
-                <h2 className="chart-title">User Management</h2>
-                <div className="table-wrapper">
-                  <table className="admin-table">
-                    <thead>
-                      <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pagedUsers.map(u => (
-                        <tr key={u.id}>
-                          <td>{u.username}</td>
-                          <td className="text-muted">{u.email}</td>
-                          <td>
-                            <select
-                              className="role-select"
-                              value={u.role}
-                              onChange={e => handleRoleChange(u.id, e.target.value)}
-                            >
-                              <option value="CUSTOMER">CUSTOMER</option>
-                              <option value="STAFF">STAFF</option>
-                              <option value="ADMIN">ADMIN</option>
-                            </select>
-                          </td>
-                          <td>
-                            <span className={`status-badge ${u.enabled ? 'status-badge--active' : 'status-badge--disabled'}`}>
-                              {u.enabled ? 'Active' : 'Disabled'}
-                            </span>
-                          </td>
-                          <td>
-                            <button
-                              className="pm-action-btn pm-action-btn--danger"
-                              onClick={() => handleDeleteUser(u.id)}
-                              disabled={authService.getUser()?.username === u.username}
-                            >
-                              🗑️ Delete
-                            </button>
-                          </td>
+              {role === 'ADMIN' && (
+                <div className="table-card">
+                  <h2 className="chart-title">User Management</h2>
+                  <div className="table-wrapper">
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Username</th>
+                          <th>Email</th>
+                          <th>Role</th>
+                          <th>Status</th>
+                          <th>Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {pagedUsers.map(u => (
+                          <tr key={u.id}>
+                            <td>{u.username}</td>
+                            <td className="text-muted">{u.email}</td>
+                            <td>
+                              <select
+                                className="role-select"
+                                value={u.role}
+                                onChange={e => handleRoleChange(u.id, e.target.value)}
+                              >
+                                <option value="CUSTOMER">CUSTOMER</option>
+                                <option value="STAFF">STAFF</option>
+                                <option value="ADMIN">ADMIN</option>
+                              </select>
+                            </td>
+                            <td>
+                              <span className={`status-badge ${u.enabled ? 'status-badge--active' : 'status-badge--disabled'}`}>
+                                {u.enabled ? 'Active' : 'Disabled'}
+                              </span>
+                            </td>
+                            <td>
+                              <button
+                                className="pm-action-btn pm-action-btn--danger"
+                                onClick={() => handleDeleteUser(u.id)}
+                                disabled={authService.getUser()?.username === u.username}
+                              >
+                                🗑️ Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="pagination">
+                    <button disabled={page === 0} onClick={() => setPage(p => p - 1)}>← Prev</button>
+                    <span>Page {page + 1} of {Math.max(1, Math.ceil(users.length / pageSize))}</span>
+                    <button disabled={(page + 1) * pageSize >= users.length} onClick={() => setPage(p => p + 1)}>Next →</button>
+                  </div>
                 </div>
-                <div className="pagination">
-                  <button disabled={page === 0} onClick={() => setPage(p => p - 1)}>← Prev</button>
-                  <span>Page {page + 1} of {Math.max(1, Math.ceil(users.length / pageSize))}</span>
-                  <button disabled={(page + 1) * pageSize >= users.length} onClick={() => setPage(p => p + 1)}>Next →</button>
-                </div>
-              </div>
+              )}
             </>
           )}
         </div>

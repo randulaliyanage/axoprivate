@@ -19,11 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-<<<<<<< HEAD
-@PreAuthorize("hasRole('ADMIN')")
-=======
 @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
->>>>>>> dev
 public class AdminController {
 
     private final AdminService adminService;
@@ -33,10 +29,7 @@ public class AdminController {
      * Returns KPI metrics for the admin dashboard.
      */
     @GetMapping("/dashboard/metrics")
-<<<<<<< HEAD
-=======
-    @PreAuthorize("hasRole('ADMIN')")
->>>>>>> dev
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<DashboardMetricsResponse>> getDashboardMetrics() {
         return ResponseEntity.ok(ApiResponse.ok("Dashboard metrics retrieved", adminService.getDashboardMetrics()));
     }
@@ -46,10 +39,7 @@ public class AdminController {
      * Returns all users (no passwords exposed).
      */
     @GetMapping("/users")
-<<<<<<< HEAD
-=======
     @PreAuthorize("hasRole('ADMIN')")
->>>>>>> dev
     public ResponseEntity<ApiResponse<List<UserSummaryResponse>>> getAllUsers() {
         return ResponseEntity.ok(ApiResponse.ok("Users retrieved", adminService.getAllUsers()));
     }
@@ -59,10 +49,7 @@ public class AdminController {
      * Update a user's role.
      */
     @PutMapping("/users/{id}/role")
-<<<<<<< HEAD
-=======
     @PreAuthorize("hasRole('ADMIN')")
->>>>>>> dev
     public ResponseEntity<ApiResponse<UserSummaryResponse>> updateUserRole(
             @PathVariable Long id,
             @RequestParam String role) {
@@ -109,10 +96,7 @@ public class AdminController {
      * Permanently removes a user account.
      */
     @DeleteMapping("/users/{id}")
-<<<<<<< HEAD
-=======
     @PreAuthorize("hasRole('ADMIN')")
->>>>>>> dev
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
         adminService.deleteUser(id);
         return ResponseEntity.ok(ApiResponse.ok("User deleted", null));

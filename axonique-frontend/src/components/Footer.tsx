@@ -54,6 +54,13 @@ export default function Footer() {
             )}
           </ul>
         </div>
+
+        <div className="footer__links">
+          <h4 className="footer__heading">Operations</h4>
+          <ul>
+            <li><a href="/staff/signin">Staff Portal</a></li>
+          </ul>
+        </div>
       </div>
 
       <div className="footer__bottom">

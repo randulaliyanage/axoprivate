@@ -17,28 +17,32 @@ public class UserSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Create Admin if not exists
-        if (!userRepository.existsByUsername("admin")) {
-            User admin = User.builder()
-                    .username("admin")
-                    .email("admin@axonique.com")
-                    .password(passwordEncoder.encode("admin123"))
-                    .role(Role.ADMIN)
-                    .enabled(true)
-                    .build();
-            userRepository.save(admin);
-        }
+        // Force Admin reset
+        User admin = userRepository.findByUsername("admin").orElse(new User());
+        admin.setUsername("admin");
+        admin.setEmail("admin@axonique.com");
+        admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setRole(Role.ADMIN);
+        admin.setEnabled(true);
+        userRepository.save(admin);
 
-        // Create Staff if not exists
-        if (!userRepository.existsByUsername("staff_1")) {
-            User staff = User.builder()
-                    .username("staff_1")
-                    .email("staff1@axonique.com")
-                    .password(passwordEncoder.encode("staff12345678"))
-                    .role(Role.STAFF)
-                    .enabled(true)
-                    .build();
-            userRepository.save(staff);
-        }
+        // Create or update Staff account
+        userRepository.findByUsername("staff_1").ifPresentOrElse(
+            user -> {
+                user.setRole(Role.STAFF);
+                user.setEnabled(true);
+                userRepository.save(user);
+            },
+            () -> {
+                User staff = User.builder()
+                        .username("staff_1")
+                        .email("staff1@axonique.com")
+                        .password(passwordEncoder.encode("staff12345678"))
+                        .role(Role.STAFF)
+                        .enabled(true)
+                        .build();
+                userRepository.save(staff);
+            }
+        );
     }
 }

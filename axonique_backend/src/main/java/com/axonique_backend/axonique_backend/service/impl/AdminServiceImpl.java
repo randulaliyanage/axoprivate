@@ -48,10 +48,15 @@ public class AdminServiceImpl implements AdminService {
         int limit = Math.min(monthlyRaw.size(), 12);
         for (int i = 0; i < limit; i++) {
             Object[] row = monthlyRaw.get(i);
-            String dateLabel = String.format("%d-%02d", (Integer) row[0], (Integer) row[1]);
+            // Defensive casting for different JDBC drivers
+            int year = ((Number) row[0]).intValue();
+            int month = ((Number) row[1]).intValue();
+            BigDecimal amount = (BigDecimal) row[2];
+            
+            String dateLabel = String.format("%d-%02d", year, month);
             revenueByMonth.add(MonthlyRevenue.builder()
                     .month(dateLabel)
-                    .revenue((BigDecimal) row[2])
+                    .revenue(amount)
                     .build());
         }
 
